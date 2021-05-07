@@ -1,0 +1,99 @@
+[
+    {
+        "name": "classroom",
+        "width": 3,
+        "height": 3,
+        "obstacle": true,
+        "spriteURL": "assets/sprites/classroom.png",
+        "position": [
+            {"x": 6, "y": 5},
+            {"x": 3, "y": 5},
+            {"x": 0, "y": 5},
+            {"x": 0, "y": 8},
+            {"x": 0, "y": 11},
+            {"x": 0, "y": 14},
+            {"x": 0, "y": 17},
+            {"x": 3, "y": 17},
+            {"x": 6, "y": 17},
+            {"x": 21, "y": 17},
+            {"x": 24, "y": 17},
+            {"x": 27, "y": 17},
+            {"x": 27, "y": 14},
+            {"x": 27, "y": 11}
+        ]
+    }, 
+
+    {
+        "name": "chapel",
+        "width":  6,
+        "height": 6,
+        "obstacle": true,
+        "spriteURL" : "assets/sprites/chapel.png",
+        "position": [
+            {"x": 15, "y": 5}
+        ] 
+    },
+
+    {
+        "name": "restroom",
+        "width":  2,
+        "height": 2,
+        "obstacle": true,
+        "spriteURL" : "assets/sprites/restroom.png",
+        "position": [
+            {"x": 9, "y": 5},
+            {"x": 28, "y": 9}
+        ] 
+    },
+
+    {
+        "name": "office",
+        "width":  4,
+        "height": 3,
+        "obstacle": true,
+        "spriteURL" : "assets/sprites/office.png",
+        "position": [
+            {"x": 9, "y": 17},
+            {"x": 13, "y": 17}
+        ] 
+    },
+
+    {
+        "name": "gate",
+        "width":  4,
+        "height": 2,
+        "obstacle": true,
+        "spriteURL" : "assets/sprites/gate.png",
+        "position": [
+            {"x": 17, "y": 18}
+        ] 
+    }, 
+
+    {
+        "name": "playground",
+        "width":  5,
+        "height": 5,
+        "obstacle": false,
+        "spriteURL" : "assets/sprites/playground.png",
+        "position": [
+            {"x": 0, "y": 0},
+            {"x": 5, "y": 0},
+            {"x": 10, "y": 0},
+            {"x": 15, "y": 0},
+            {"x": 20, "y": 0},
+            {"x": 25, "y": 0},
+            {"x": 15, "y": 5}
+        ] 
+    },
+
+    {
+        "name": "parking",
+        "width":  9,
+        "height": 4,
+        "obstacle": true,
+        "spriteURL" : "assets/sprites/parking.png",
+        "position": [
+            {"x": 21, "y": 5}
+        ] 
+    }
+]
