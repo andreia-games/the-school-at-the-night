@@ -1,0 +1,65 @@
+[
+    {
+        "name": "Muro",
+        "width": 4,
+        "height": 4,
+        "type": "Wall",
+        "door": {
+            "x": 4,
+            "y": 4,
+            "dir": "y"
+        },
+        "spriteURL": "assets/sprites/classroom.png",
+        "position": [
+            {
+                "x": 1,
+                "y": 1
+            }
+        ]
+    },
+    {
+        "name": "Muro",
+        "width": 10,
+        "height": 10,
+        "type": "Wall",
+        "door": {
+            "x": 6,
+            "y": 5,
+            "dir": "x"
+        },
+        "spriteURL": "assets/sprites/classroom.png",
+        "position": [
+            {
+                "x": 6,
+                "y": 5
+            }
+        ]
+    },
+    {
+        "name": "Bloque",
+        "width": 10,
+        "height": 10,
+        "type": "Block",
+        "door": null,
+        "spriteURL": "assets/sprites/classroom.png",
+        "position": [
+            {
+                "x": 17,
+                "y": 5
+            }
+        ]
+    },
+    {
+        "name": "Fondo",
+        "width": 10,
+        "height": 10,
+        "type": "background",
+        "spriteURL": "assets/sprites/classroom.png",
+        "position": [
+            {
+                "x": 17,
+                "y": 5
+            }
+        ]
+    }
+]
