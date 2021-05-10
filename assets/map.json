@@ -1,64 +1,152 @@
 [
     {
-        "name": "Muro",
+        "name": "Coordinación",
+        "width": 10,
+        "height": 6,
+        "type": "block",
+        "spriteURL": "assets/sprites/classroom.png",
+        "position": [
+            {
+                "x": 0,
+                "y": 0
+            }
+        ]
+    },
+    {
+        "name": "Potón",
+        "width": 10,
+        "height": 4,
+        "type": "block",
+        "spriteURL": "assets/sprites/classroom.png",
+        "position": [
+            {
+                "x": 10,
+                "y": 0
+            }
+        ]
+    },
+    {
+        "name": "Salón de Clases",
+        "width": 10,
+        "height": 7,
+        "type": "block",
+        "spriteURL": "assets/sprites/classroom.png",
+        "position": [
+            {
+                "x": 20,
+                "y": 0,
+                "door": {
+                    "x": 20,
+                    "y": 5,
+                    "dir": "x"
+                }
+            },
+            {
+                "x": 20,
+                "y": 7,
+                "door": {
+                    "x": 20,
+                    "y": 12,
+                    "dir": "x"
+                }
+            },
+            {
+                "x": 20,
+                "y": 14,
+                "door": {
+                    "x": 20,
+                    "y": 19,
+                    "dir": "x"
+                }
+            },
+            {
+                "x": 20,
+                "y": 21,
+                "door": {
+                    "x": 20,
+                    "y": 26,
+                    "dir": "x"
+                }
+            },
+            {
+                "x": 0,
+                "y": 6,
+                "door": {
+                    "x": 9,
+                    "y": 11,
+                    "dir": "x"
+                }
+            },
+            {
+                "x": 0,
+                "y": 13,
+                "door": {
+                    "x": 9,
+                    "y": 18,
+                    "dir": "x"
+                }
+            }
+        ]
+    },
+    {
+        "name": "Baño",
+        "width": 10,
+        "height": 6,
+        "type": "block",
+        "spriteURL": "assets/sprites/classroom.png",
+        "position": [
+            {
+                "x": 0,
+                "y": 20,
+                "door": {
+                    "x": 9,
+                    "y": 24,
+                    "dir": "x"
+                }
+            }
+        ]
+    },
+    {
+        "name": "Capilla",
+        "width": 13,
+        "height": 10,
+        "type": "Wall",
+        "spriteURL": "assets/sprites/classroom.png",
+        "position": [
+            {
+                "x": 0,
+                "y": 26,
+                "door": {
+                    "x": 12,
+                    "y": 30,
+                    "dir": "x"
+                }
+            }
+        ]
+    },
+    {
+        "name": "Tienda",
+        "width": 6,
+        "height": 8,
+        "type": "block",
+        "spriteURL": "assets/sprites/classroom.png",
+        "position": [
+            {
+                "x": 24,
+                "y": 28
+            }
+        ]
+    },
+    {
+        "name": "Estatua",
         "width": 4,
         "height": 4,
-        "type": "Wall",
-        "door": {
-            "x": 4,
-            "y": 4,
-            "dir": "y"
-        },
+        "type": "block",
         "spriteURL": "assets/sprites/classroom.png",
         "position": [
             {
-                "x": 1,
-                "y": 1
-            }
-        ]
-    },
-    {
-        "name": "Muro",
-        "width": 10,
-        "height": 10,
-        "type": "Wall",
-        "door": {
-            "x": 6,
-            "y": 5,
-            "dir": "x"
-        },
-        "spriteURL": "assets/sprites/classroom.png",
-        "position": [
-            {
-                "x": 6,
-                "y": 5
-            }
-        ]
-    },
-    {
-        "name": "Bloque",
-        "width": 10,
-        "height": 10,
-        "type": "Block",
-        "door": null,
-        "spriteURL": "assets/sprites/classroom.png",
-        "position": [
-            {
-                "x": 17,
-                "y": 5
-            }
-        ]
-    },
-    {
-        "name": "Fondo",
-        "width": 10,
-        "height": 10,
-        "type": "background",
-        "spriteURL": "assets/sprites/classroom.png",
-        "position": [
-            {
-                "x": 17,
-                "y": 5
+                "x": 13,
+                "y": 14
             }
         ]
     }

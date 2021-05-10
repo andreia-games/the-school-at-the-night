@@ -3,20 +3,27 @@ class GameMap {
     Component = class {
         /**
          * 
-         * @param {String} name
-         * @param {Number} x 
-         * @param {Number} y 
-         * @param {Number} width 
-         * @param {Number} height 
-         * @param {String} type 
+         * @param {String}  name
+         * @param {Number}  x 
+         * @param {Number}  y 
+         * @param {Number}  width 
+         * @param {Number}  height 
+         * @param {JSON}    door
+         * @param {String}  imgURL 
          */
-        constructor(name, x, y, width, height, door) {
+        constructor(name, x, y, width, height, door, imgURL) {
             this.name = name;
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
             this.door = door;
+
+            try {
+                this.img = loadImage(imgURL);
+            } catch (e) {
+                logMyErrors(e);
+            }
         }
     }
 
@@ -41,37 +48,25 @@ class GameMap {
         this.yOffset = 0;
 
         this.player = null;
-        this.components = null;
+        this.gridLayout = null;
 
-        this.gridLayout = this.createGrid(width, height);
         this.createLayout();
-    }
-
-
-    /**
-     * Creates an 2d matrix of 0s.
-     * 
-     * @param {Number} width    number of collums.
-     * @param {Number} height   number of row.
-     * @returns                 2d Matrix.
-     */
-    createGrid(width, height) {
-        let matrix = []; // Make and 2d Array
-
-        for (let col = 0; col <= width; col++) {
-            matrix[col] = [];  // Add an empty row to the collum
-            for (let row = 0; row <= height; row++) {
-                matrix[col][row] = null;
-            }
-        }
-
-        return matrix;
     }
 
     /**
      * Read all the JSON to get The diferent componets
      */
     createLayout() {
+        // Inicialize the grid
+        this.gridLayout = []; // Make and 2d Array
+
+        for (let col = 0; col <= width; col++) {
+            this.gridLayout[col] = [];  // Add an empty row to the collum
+            for (let row = 0; row <= height; row++) {
+                this.gridLayout[col][row] = null;
+            }
+        }
+
         // Iterate by component in the JSON
         for (let key of Object.keys(this.componetsJSON)) {
             let componetJSON = this.componetsJSON[key];
@@ -81,24 +76,24 @@ class GameMap {
 
                 if (componetJSON.type != "background") {
                     // Create a new component and add the poiter to the object in the grid
-                    let component = new this.Component(componetJSON.name, position.x, position.y, componetJSON.width, componetJSON.height, componetJSON.door);
+                    let component = new this.Component(componetJSON.name, position.x, position.y, componetJSON.width, componetJSON.height, position.door, componetJSON.spriteURL);
 
                     for (let x = component.x; x < component.x + component.width; x++) {
                         for (let y = component.y; y < component.y + component.height; y++) {
                             if (this.gridLayout[x][y] != null) {
-                                console.error("There is alredy a component here." +
-                                    "\nTry create: " + key + " on x: " + x + " y: " + y +
-                                    "\nTrying create: ", componetJSON.name +
-                                "\nExisting comopent: ", this.gridLayout[x][y]);
-                            } else {
-                                this.gridLayout[x][y] = component;
+                                console.warn("There is alredy a component here." +
+                                    "\ncreate: " + key + " on x: " + x + " y: " + y +
+                                    "\ncreate: ", componetJSON.name +
+                                "\nOverwrite: ", this.gridLayout[x][y]);
                             }
+                            this.gridLayout[x][y] = component;
                         }
                     }
                 }
             }
         }
     }
+
     /**
      * Add an player to the game map.
      * 
@@ -197,6 +192,41 @@ class GameMap {
         this.yOffset -= yChange * this.boxSize;
 
         return true;
+    }
+
+    drawPlane() {
+        translate(this.xOffset, this.yOffset);
+        background(color('black'));
+        strokeWeight(0);
+
+        for (let x = 0; x <= this.width; x++) {
+            for (let y = 0; y <= this.height; y++) {
+                let component = this.gridLayout[x][y];
+
+                if (component == null) {
+                    fill(color('lightgray'));
+                } else {
+                    if (component.door != null) {
+                        if (component.door.x == x && component.door.y == y)
+                            fill(color('lightgreen'));
+                        else
+                            fill(color('darkgray'));
+                    } else {
+                        fill(color('gray'));
+                    }
+                    rect(x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
+                }
+
+                rect(x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
+                fill(color('black'));
+
+                if (component != null && component.x == x && component.y == y)
+                    text(component.name, x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
+                else
+                    text(x + "," + y + "\n", x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
+
+            }
+        }
     }
     /**
      * Draw the grid, the position of each entry and the componet that is there
