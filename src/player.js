@@ -30,6 +30,36 @@ class Player {
             this.player = player
             this.map = this.player.map;
             this.canMove = true;
+
+            this.createControler();
+        }
+
+        createControler() {
+            let motionBootons = createDiv();
+            let leftRightButtons = createDiv();
+            let buttonUp = createButton('&uarr;');
+            let buttonDown = createButton('&darr;');
+            let buttonLeft = createButton('&larr;');
+            let buttonRight = createButton('&rarr;');
+
+            buttonUp.mousePressed(() => map.movePlayer(0, -1));
+            buttonDown.mousePressed(() => map.movePlayer(0, 1));
+            buttonLeft.mousePressed(() => map.movePlayer(-1, 0));
+            buttonRight.mousePressed(() => map.movePlayer(1, 0));
+
+            motionBootons.id('MotionButton');
+            buttonUp.id('up');
+            buttonDown.id('down');
+            buttonLeft.id('left');
+            buttonRight.id('right');
+
+
+            leftRightButtons.child(buttonLeft);
+            leftRightButtons.child(buttonRight);
+
+            motionBootons.child(buttonUp);
+            motionBootons.child(leftRightButtons);
+            motionBootons.child(buttonDown);
         }
 
         keyPressed() {

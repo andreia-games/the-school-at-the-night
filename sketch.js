@@ -19,6 +19,7 @@ function setup() {
 function draw() {
 	// map.drawGrid();
 	map.drawPlane();
+
 	fill(color('red'));
 	rect(player.x * boxSize, player.y * boxSize, boxSize, boxSize);
 }
