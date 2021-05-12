@@ -4,23 +4,10 @@
         "width": 10,
         "height": 6,
         "type": "block",
-        "spriteURL": "assets/sprites/classroom.png",
+        "spriteURL": "assets/background/office.png",
         "position": [
             {
                 "x": 0,
-                "y": 0
-            }
-        ]
-    },
-    {
-        "name": "Potón",
-        "width": 10,
-        "height": 4,
-        "type": "background",
-        "spriteURL": "assets/sprites/classroom.png",
-        "position": [
-            {
-                "x": 10,
                 "y": 0
             }
         ]
@@ -30,7 +17,7 @@
         "width": 10,
         "height": 7,
         "type": "block",
-        "spriteURL": "assets/sprites/classroom.png",
+        "spriteURL": "assets/background/classroom.png",
         "position": [
             {
                 "x": 20,
@@ -93,7 +80,7 @@
         "width": 10,
         "height": 6,
         "type": "block",
-        "spriteURL": "assets/sprites/classroom.png",
+        "spriteURL": "assets/background/restroom.png",
         "position": [
             {
                 "x": 0,
@@ -111,7 +98,7 @@
         "width": 13,
         "height": 9,
         "type": "Wall",
-        "spriteURL": "assets/sprites/classroom.png",
+        "spriteURL": "assets/background/chapel.png",
         "position": [
             {
                 "x": 0,
@@ -129,23 +116,23 @@
         "width": 6,
         "height": 7,
         "type": "block",
-        "spriteURL": "assets/sprites/classroom.png",
+        "spriteURL": "assets/background/store.png",
         "position": [
             {
-                "x": 24,
+                "x": 23,
                 "y": 28
             }
         ]
     },
     {
         "name": "Estatua",
-        "width": 4,
-        "height": 4,
+        "width": 2,
+        "height": 2,
         "type": "block",
-        "spriteURL": "assets/sprites/classroom.png",
+        "spriteURL": "assets/background/classroom.png",
         "position": [
             {
-                "x": 13,
+                "x": 14,
                 "y": 14
             }
         ]

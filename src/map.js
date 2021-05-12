@@ -148,16 +148,18 @@ class GameMap {
      */
     createGameMapImg() {
         let gameImg = createGraphics(this.width * this.boxSize, this.height * this.boxSize);
-        gameImg.background(color('white'));
+
+        gameImg.background(color('#bcaaa4'));
+
+        gameImg.textSize(30);
+        gameImg.textAlign(CENTER, CENTER);
+        gameImg.text("The School At the night", 10 * this.boxSize, 0 * this.boxSize, 10 * this.boxSize, 2 * this.boxSize);
+        gameImg.textSize(15);
+        gameImg.text("Tu descuidado tio no fue a buscarte a la escuela. Ahora estas atrapada en ella a mitad de la noche. Si quieres salir de aquí antes de que el reloj marque la una y los esqueletos salgan de sus tumbas, deberas completar una serie de misiones. Buena suerte.",
+            11 * this.boxSize, 2 * this.boxSize, 8 * this.boxSize);
 
         for (let component of this.components) {
             gameImg.image(component.img, component.x * this.boxSize, component.y * this.boxSize, component.width * this.boxSize, component.height * this.boxSize)
-            if (component.door != null) {
-                let door = component.door;
-
-                gameImg.fill(color('#24fc03'));
-                gameImg.rect(door.x * this.boxSize, door.y * this.boxSize, this.boxSize, this.boxSize);
-            }
         }
         return gameImg;
     }

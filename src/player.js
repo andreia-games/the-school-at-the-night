@@ -37,6 +37,7 @@ class Player {
         createControler() {
             let motionBootons = createDiv();
             let leftRightButtons = createDiv();
+
             let buttonUp = createButton('&uarr;');
             let buttonDown = createButton('&darr;');
             let buttonLeft = createButton('&larr;');
@@ -52,7 +53,6 @@ class Player {
             buttonDown.id('down');
             buttonLeft.id('left');
             buttonRight.id('right');
-
 
             leftRightButtons.child(buttonLeft);
             leftRightButtons.child(buttonRight);
