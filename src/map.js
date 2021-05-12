@@ -156,7 +156,7 @@ class GameMap {
         gameImg.text("The School At the night", 10 * this.boxSize, 0 * this.boxSize, 10 * this.boxSize, 2 * this.boxSize);
         gameImg.textSize(15);
         gameImg.text("Tu descuidado tio no fue a buscarte a la escuela. Ahora estas atrapada en ella a mitad de la noche. Si quieres salir de aquí antes de que el reloj marque la una y los esqueletos salgan de sus tumbas, deberas completar una serie de misiones. Buena suerte.",
-            11 * this.boxSize, 2 * this.boxSize, 8 * this.boxSize);
+            11 * this.boxSize, 2 * this.boxSize, 7 * this.boxSize);
 
         for (let component of this.components) {
             gameImg.image(component.img, component.x * this.boxSize, component.y * this.boxSize, component.width * this.boxSize, component.height * this.boxSize)
