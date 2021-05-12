@@ -16,7 +16,7 @@
         "name": "Potón",
         "width": 10,
         "height": 4,
-        "type": "block",
+        "type": "background",
         "spriteURL": "assets/sprites/classroom.png",
         "position": [
             {
@@ -109,7 +109,7 @@
     {
         "name": "Capilla",
         "width": 13,
-        "height": 10,
+        "height": 9,
         "type": "Wall",
         "spriteURL": "assets/sprites/classroom.png",
         "position": [
@@ -127,7 +127,7 @@
     {
         "name": "Tienda",
         "width": 6,
-        "height": 8,
+        "height": 7,
         "type": "block",
         "spriteURL": "assets/sprites/classroom.png",
         "position": [

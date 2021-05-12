@@ -1,25 +1,22 @@
-let map;
-let player;
-let componetsJSON;
+let map, player;
 let boxSize = 50;
 
+// load the componets
 function preload() {
-	componetsJSON = loadJSON("assets/map.json");
+	map = new GameMap("Mapa", 29, 35, boxSize, "assets/map.json");
+	player = new Player("Pepito");
 }
 
 function setup() {
 	createCanvas(30 * boxSize, 20 * boxSize);
-	map = new GameMap("Mapa", 29, 35, boxSize, componetsJSON);
-	player = new Player("Pepito");
-
+	map.setup(); // Creates the maps image
 	map.setPlayer(player, 14, 6);
 	player.addControler(player);
 }
 
 function draw() {
 	// map.drawGrid();
-	map.drawPlane();
-
+	map.draw();
 	fill(color('red'));
 	rect(player.x * boxSize, player.y * boxSize, boxSize, boxSize);
 }

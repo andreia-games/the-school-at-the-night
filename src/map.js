@@ -3,27 +3,25 @@ class GameMap {
     Component = class {
         /**
          * 
-         * @param {String}  name
-         * @param {Number}  x 
-         * @param {Number}  y 
-         * @param {Number}  width 
-         * @param {Number}  height 
-         * @param {JSON}    door
-         * @param {String}  imgURL 
+         * @param {String}  name    Name of the componet.
+         * @param {Number}  x       x position of the componet.
+         * @param {Number}  y       y position of the componet.
+         * @param {Number}  width   Number of collum of the componets.
+         * @param {Number}  height  Number of rows of the componets.
+         * @param {JSON}    door    Position and direction of the door.
+         * @param {String}  type    Block or background
+         * @param {Image}   img     Image of the component image.
          */
-        constructor(name, x, y, width, height, door, imgURL) {
+        constructor(name, x, y, width, height, boxSize, door, type, img) {
             this.name = name;
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
             this.door = door;
-
-            try {
-                this.img = loadImage(imgURL);
-            } catch (e) {
-                logMyErrors(e);
-            }
+            this.type = type;
+            this.boxSize = boxSize;
+            this.img = img;
         }
     }
 
@@ -31,41 +29,34 @@ class GameMap {
      * The game map rendes the game UI and controls the player motion. 
      * To do that, it use and 2d array that represent the sctruture of the map.
      * 
-     * @param {String}  mapName      The name of the map.
-     * @param {Number}  width        The number of collums.
-     * @param {Number}  height       The number of rows.
-     * @param {Number}  boxSize      The width and height of each box.
-     * @param {JSON}    componetsJSON  The JSON that specify the componets of the map. 
+     * @param {String}  mapName         The name of the map.
+     * @param {Number}  width           The number of collums.
+     * @param {Number}  height          The number of rows.
+     * @param {Number}  boxSize         The width and height of each box.
+     * @param {JSON}    componetsJSON   The JSON that specify the componets of the map. 
      */
     constructor(mapName, width, height, boxSize, componetsJSON) {
         this.mapName = mapName;
         this.width = width;
         this.height = height;
         this.boxSize = boxSize;
-        this.componetsJSON = componetsJSON;
+        this.componetsJSON = loadJSON(componetsJSON, () => this.components = this.createComponets());
 
+        // By deafult if 0 (not traslated) when the player is added or moved it change
         this.xOffset = 0;
         this.yOffset = 0;
-
-        this.player = null;
-        this.gridLayout = null;
-
-        this.createLayout();
     }
 
-    /**
-     * Read all the JSON to get The diferent componets
-     */
-    createLayout() {
-        // Inicialize the grid
-        this.gridLayout = []; // Make and 2d Array
+    setup() {
+        // this.components = this.createComponets();
+        this.gridLayout = this.createGrid();
+        this.gameGridimg = this.createGridImg();
+        this.gameMapImg = this.createGameMapImg();
+    }
 
-        for (let col = 0; col <= width; col++) {
-            this.gridLayout[col] = [];  // Add an empty row to the collum
-            for (let row = 0; row <= height; row++) {
-                this.gridLayout[col][row] = null;
-            }
-        }
+    /** Read all the JSON to get The diferent componets */
+    createComponets() {
+        let components = [];
 
         // Iterate by component in the JSON
         for (let key of Object.keys(this.componetsJSON)) {
@@ -73,29 +64,105 @@ class GameMap {
 
             // Itere by the positions of the componets
             for (let position of componetJSON.position) {
+                let componetImage = loadImage(componetJSON.spriteURL, () => {
 
-                if (componetJSON.type != "background") {
                     // Create a new component and add the poiter to the object in the grid
-                    let component = new this.Component(componetJSON.name, position.x, position.y, componetJSON.width, componetJSON.height, position.door, componetJSON.spriteURL);
+                    let component = new this.Component(
+                        componetJSON.name,
+                        position.x, position.y,
+                        componetJSON.width,
+                        componetJSON.height,
+                        this.boxSize,
+                        position.door,
+                        componetJSON.type,
+                        componetImage,
+                    );
 
-                    for (let x = component.x; x < component.x + component.width; x++) {
-                        for (let y = component.y; y < component.y + component.height; y++) {
-                            if (this.gridLayout[x][y] != null) {
-                                console.warn("There is alredy a component here." +
-                                    "\ncreate: " + key + " on x: " + x + " y: " + y +
-                                    "\ncreate: ", componetJSON.name +
-                                "\nOverwrite: ", this.gridLayout[x][y]);
-                            }
-                            this.gridLayout[x][y] = component;
+                    // Set the componet to the list
+                    components.push(component);
+                });
+            }
+        }
+        return components;
+    }
+
+    /** Create grid matrix */
+    createGrid() {
+        // Inicialize the grid
+        let grid = []; // Make and 2d Array
+        for (let col = 0; col < width; col++) {
+            grid[col] = [];  // Add an empty row to the collum
+            for (let row = 0; row < height; row++) {
+                grid[col][row] = null;
+            }
+        }
+
+        for (let component of this.components) {
+            if (component.type != "background") {
+                // Set the componet to the layout
+                for (let x = component.x; x < component.x + component.width; x++) {
+                    for (let y = component.y; y < component.y + component.height; y++) {
+                        if (grid[x][y] != null) {
+                            console.warn("There is alredy a component here." +
+                                "\ncreate: " + key + " on x: " + x + " y: " + y +
+                                "\ncreate: ", component.name +
+                            "\nOverwrite: ", grid[x][y]);
                         }
+                        grid[x][y] = component;
                     }
                 }
             }
         }
+        return grid;
     }
 
-    /**
-     * Add an player to the game map.
+    /** Create and grid of name and positions of the componets in the grid
+     * 
+     * @returns Image
+     */
+    createGridImg() {
+        let gridImg = createGraphics(this.width * this.boxSize, this.height * this.boxSize);
+        gridImg.background(color('white'));
+
+        for (let x = 0; x <= this.width; x++) {
+            for (let y = 0; y <= this.height; y++) {
+
+                gridImg.fill(color('white'))
+                gridImg.strokeWeight(1);
+                gridImg.rect(x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
+
+                // Draw the position of the entry
+                gridImg.fill(color('gray'));
+                if (this.gridLayout[x][y] != null)
+                    gridImg.text(x + "," + y + "\n" + this.gridLayout[x][y].name, x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
+                else
+                    gridImg.text(x + "," + y + "\n", x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
+            }
+        }
+
+        return gridImg;
+    }
+
+    /** Creates the game map
+     * @returns Image
+     */
+    createGameMapImg() {
+        let gameImg = createGraphics(this.width * this.boxSize, this.height * this.boxSize);
+        gameImg.background(color('white'));
+
+        for (let component of this.components) {
+            gameImg.image(component.img, component.x * this.boxSize, component.y * this.boxSize, component.width * this.boxSize, component.height * this.boxSize)
+            if (component.door != null) {
+                let door = component.door;
+
+                gameImg.fill(color('#24fc03'));
+                gameImg.rect(door.x * this.boxSize, door.y * this.boxSize, this.boxSize, this.boxSize);
+            }
+        }
+        return gameImg;
+    }
+
+    /** Add an player to the game map.
      * 
      * @param {Player} player   The player.
      * @param {Number} x        The x position.
@@ -119,21 +186,21 @@ class GameMap {
         }
     }
 
+    /**
+     * 
+     * @param {Number} xChange  
+     * @param {Number} yChange 
+     * @returns susses
+     */
     movePlayer(xChange, yChange) {
-        // The logic of the motion is composed by two kind of moments:
-        // 1. The player is inside an component
-        // 2. Th player is not in an component
 
-        if (!(player.x + xChange >= 0 && player.x + xChange <= this.width && player.y + yChange >= 0 && player.y + yChange <= this.height)) {
-            // The momvent is not pisiblle cause new position is out the grid
+        if (!(player.x + xChange >= 0 && player.x + xChange <= this.width - 1 && player.y + yChange >= 0 && player.y + yChange <= this.height - 1)) {
+            // The momvent is not posible cause new position is out the grid
             return false;
         }
 
         if (this.gridLayout[this.player.x][this.player.y] != null) {
-            // True means: The player is inside a component
-            // If the player is inside a component it can move inside the limits of the componet
-            // But if the player is in the borders of the component it can move outside without a door
-
+            // The player is inside a component
 
             let component = this.gridLayout[this.player.x][this.player.y];
             let door = component.door;
@@ -141,24 +208,18 @@ class GameMap {
             if (door == null) return false; // The is not a door, the player can't move
 
             if (xChange != 0) {
-                // True means: the player is moving in the x axis
-
                 if (!(this.player.x == door.x && this.player.y == door.y && door.dir == "x") && (this.gridLayout[this.player.x + xChange][this.player.y + yChange] != component)) {
-                    // True means: There is not a dorr and the player wants move out the component. Then, the player can't move
+                    // True means: There is not a door and the player wants move out the component. Then, the player can't move
                     return false;
                 }
             } else {
-                // True means: the player is moving in the y axis
-
                 if (!(this.player.x == door.x && this.player.y == door.y && door.dir == "y") && (this.gridLayout[this.player.x + xChange][this.player.y + yChange] != component)) {
-                    // True means: There is not a dorr and the player wants move out the component. Then, the player can't move
+                    // True means: There is not a door and the player wants move out the component. Then, the player can't move
                     return false;
                 }
             }
         } else {
-            // True means: The player is not in a component
-            // If the player is not in a component is can move everypart but walls
-            // If the player wants to go in a component, there must be a door
+            // The player is not in a component
 
             if (this.gridLayout[player.x + xChange][player.y + yChange] != null) {
                 // True means: There is an component in the new position
@@ -194,63 +255,21 @@ class GameMap {
         return true;
     }
 
-    drawPlane() {
+    /** Draw the componets image */
+    draw() {
         translate(this.xOffset, this.yOffset);
         background(color('black'));
-        strokeWeight(0);
-
-        for (let x = 0; x <= this.width; x++) {
-            for (let y = 0; y <= this.height; y++) {
-                let component = this.gridLayout[x][y];
-
-                if (component == null) {
-                    fill(color('lightgray'));
-                } else {
-                    if (component.door != null) {
-                        if (component.door.x == x && component.door.y == y)
-                            fill(color('lightgreen'));
-                        else
-                            fill(color('darkgray'));
-                    } else {
-                        fill(color('gray'));
-                    }
-                    rect(x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
-                }
-
-                rect(x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
-                fill(color('black'));
-
-                if (component != null && component.x == x && component.y == y)
-                    text(component.name, x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
-                else
-                    text(x + "," + y + "\n", x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
-
-            }
-        }
+        image(this.gameMapImg, 0, 0);
     }
-    /**
-     * Draw the grid, the position of each entry and the componet that is there
-     */
+
+    /** Draw the grid, the position of each entry and the componet that is there. */
     drawGrid() {
         translate(this.xOffset, this.yOffset);
         background(color('black'));
-        for (let x = 0; x <= this.width; x++) {
-
-            for (let y = 0; y <= this.height; y++) {
-                fill(color('white'))
-                strokeWeight(1);
-                rect(x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
-
-                // Draw the position of the entry
-                fill(color('gray'));
-                if (this.gridLayout[x][y] != null)
-                    text(x + "," + y + "\n" + this.gridLayout[x][y].name, x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
-                else
-                    text(x + "," + y + "\n", x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
-            }
-        }
+        image(this.gameGridimg, 0, 0);
     }
 
+    /** Translate the canvas taking the player position as reference point. */
     windowResized() {
         this.xOffset = -player.x * this.boxSize + floor(windowWidth / 2);
         this.yOffset = -player.y * this.boxSize + floor(windowHeight / 2);
