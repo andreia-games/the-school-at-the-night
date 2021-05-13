@@ -126,13 +126,13 @@
     },
     {
         "name": "Estatua",
-        "width": 2,
+        "width": 3,
         "height": 2,
         "type": "block",
         "spriteURL": "assets/background/classroom.png",
         "position": [
             {
-                "x": 14,
+                "x": 13,
                 "y": 14
             }
         ]

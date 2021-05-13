@@ -10,38 +10,39 @@
 
 		<!-- Game logic  -->
 		<script src="sketch.js"></script>
-		<script src="src/game.js"></script>
+		<script src="src/componet.js"></script>
 		<script src="src/map.js"></script>
 		<script src="src/player.js"></script>
 
-		<style>
-			body, html {
-				padding: 0;
-				margin: 0;
-				overflow: hidden;
-			}
-
-			#MotionButton{
-				position: absolute;
-				bottom: 20px;
-				left: 20px;
-				width: 100px;
-			}
-
-			#MotionButton button {
-				background-color: cornflowerblue;
-				height: 30px;
-				width: 50%;
-				margin: auto;
-			}
-			#MotionButton > * {
-				display: block;
-				width: 100%;
-			}
-		</style>
+		<link rel="stylesheet" href="styles.css">
 
 		<title>The School at the Night</title>
 	</head>
 
-	<body> </body>
+	<body>
+		<main id="root">
+			<div id="canvas-container"></div>
+
+			<div id="mision-control"> </div>
+
+			<div id="menu">
+				<button id="open-skin-menu">&#9881;</button>
+				<button id="mini-map">&#x1F50E;&#xFE0E;</button>
+			</div>
+
+			<div id="MotionButton">
+				<button id="up">&uarr;</button>
+				<div>
+					<button id="left">&larr;</button>
+					<button id="right">&rarr;</button>
+				</div>
+				<button id="down">&darr;</button>
+			</div>
+			
+			<div id="skin-menu">
+				<button id="close-skin-menu">x</button>	
+			</div>
+		</main>
+		
+	</body>
 </html>

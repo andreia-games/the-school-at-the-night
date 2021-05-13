@@ -1,30 +1,5 @@
 class GameMap {
 
-    Component = class {
-        /**
-         * 
-         * @param {String}  name    Name of the componet.
-         * @param {Number}  x       x position of the componet.
-         * @param {Number}  y       y position of the componet.
-         * @param {Number}  width   Number of collum of the componets.
-         * @param {Number}  height  Number of rows of the componets.
-         * @param {JSON}    door    Position and direction of the door.
-         * @param {String}  type    Block or background
-         * @param {Image}   img     Image of the component image.
-         */
-        constructor(name, x, y, width, height, boxSize, door, type, img) {
-            this.name = name;
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-            this.door = door;
-            this.type = type;
-            this.boxSize = boxSize;
-            this.img = img;
-        }
-    }
-
     /**
      * The game map rendes the game UI and controls the player motion. 
      * To do that, it use and 2d array that represent the sctruture of the map.
@@ -67,7 +42,7 @@ class GameMap {
                 let componetImage = loadImage(componetJSON.spriteURL, () => {
 
                     // Create a new component and add the poiter to the object in the grid
-                    let component = new this.Component(
+                    let component = new Component(
                         componetJSON.name,
                         position.x, position.y,
                         componetJSON.width,
@@ -153,7 +128,7 @@ class GameMap {
 
         gameImg.textSize(30);
         gameImg.textAlign(CENTER, CENTER);
-        gameImg.text("The School At the night", 10 * this.boxSize, 0 * this.boxSize, 10 * this.boxSize, 2 * this.boxSize);
+        gameImg.text("The School At the night", 10 * this.boxSize, 0 * this.boxSize, 9 * this.boxSize, 2 * this.boxSize);
         gameImg.textSize(15);
         gameImg.text("Tu descuidado tio no fue a buscarte a la escuela. Ahora estas atrapada en ella a mitad de la noche. Si quieres salir de aquí antes de que el reloj marque la una y los esqueletos salgan de sus tumbas, deberas completar una serie de misiones. Buena suerte.",
             11 * this.boxSize, 2 * this.boxSize, 7 * this.boxSize);
@@ -162,6 +137,14 @@ class GameMap {
             gameImg.image(component.img, component.x * this.boxSize, component.y * this.boxSize, component.width * this.boxSize, component.height * this.boxSize)
         }
         return gameImg;
+    }
+
+    /**
+     * 
+     * @param {Component} component 
+     */
+    setComponent(component) {
+        this.components.push(component);
     }
 
     /** Add an player to the game map.

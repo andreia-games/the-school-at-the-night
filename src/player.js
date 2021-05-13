@@ -1,11 +1,22 @@
 class Player {
 
-    constructor(name) {
+    constructor(name, boxSize, skins) {
         this.name = name;
+        this.boxSize = boxSize;
+        this.skins = skins;
 
         this.map = null;
         this.x = -1;
         this.y = -1;
+    }
+
+    draw() {
+        fill(color('red'));
+        rect(this.x * this.boxSize, this.y * this.boxSize, this.boxSize, this.boxSize);
+    }
+
+    addSkin(skinName, skinImg) {
+        this.skins[skinName] = skinImg;
     }
 
     addControler(event) {
@@ -21,10 +32,6 @@ class Player {
         this.y = y;
     }
 
-    changeSkin() {
-
-    }
-
     Controler = class {
         constructor(player) {
             this.player = player
@@ -35,35 +42,28 @@ class Player {
         }
 
         createControler() {
-            let motionBootons = createDiv();
-            let leftRightButtons = createDiv();
-
-            let buttonUp = createButton('&uarr;');
-            let buttonDown = createButton('&darr;');
-            let buttonLeft = createButton('&larr;');
-            let buttonRight = createButton('&rarr;');
+            let buttonUp = select('#up');
+            let buttonDown = select('#down');
+            let buttonLeft = select('#left');
+            let buttonRight = select('#right');
 
             buttonUp.mousePressed(() => map.movePlayer(0, -1));
             buttonDown.mousePressed(() => map.movePlayer(0, 1));
             buttonLeft.mousePressed(() => map.movePlayer(-1, 0));
             buttonRight.mousePressed(() => map.movePlayer(1, 0));
 
-            motionBootons.id('MotionButton');
-            buttonUp.id('up');
-            buttonDown.id('down');
-            buttonLeft.id('left');
-            buttonRight.id('right');
+            let skinMenu = select('#skin-menu');
+            let openSkinMenu = select('#open-skin-menu');
+            let closeSkinMenu = select('#close-skin-menu');
 
-            leftRightButtons.child(buttonLeft);
-            leftRightButtons.child(buttonRight);
+            openSkinMenu.mousePressed(() => skinMenu.show());
+            closeSkinMenu.mousePressed(() => skinMenu.hide());
 
-            motionBootons.child(buttonUp);
-            motionBootons.child(leftRightButtons);
-            motionBootons.child(buttonDown);
+
         }
 
         keyPressed() {
-            if (this.canMove)
+            if (this.canMove) {
                 switch (keyCode) {
                     case 37:
                         // Arrow Left
@@ -82,7 +82,7 @@ class Player {
                         // Arrow Down
                         break;
                 }
+            }
         }
     }
-
 }
