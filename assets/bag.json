@@ -1,0 +1,20 @@
+[
+    {
+        "name": "cosa 1",
+        "img": "assets/background/office.png",
+        "state": "usar",
+        "price": 0
+    },
+    {
+        "name": "cosa 2",
+        "img": "assets/background/office.png",
+        "state": "comprar",
+        "price": 10
+    },
+    {
+        "name": "cosa 2",
+        "img": "assets/background/office.png",
+        "state": "comprar",
+        "price": 0
+    }
+]

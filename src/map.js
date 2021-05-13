@@ -23,7 +23,6 @@ class GameMap {
     }
 
     setup() {
-        // this.components = this.createComponets();
         this.gridLayout = this.createGrid();
         this.gameGridimg = this.createGridImg();
         this.gameMapImg = this.createGameMapImg();

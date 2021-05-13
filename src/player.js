@@ -1,22 +1,30 @@
 class Player {
 
-    constructor(name, boxSize, skins) {
+    constructor(name, boxSize, skin) {
         this.name = name;
         this.boxSize = boxSize;
-        this.skins = skins;
+        this.points = 0;
 
         this.map = null;
         this.x = -1;
         this.y = -1;
+
+        if (skin == null) this.skin = this.createDefaultSkin();
+        else this.skin = skin;
+    }
+
+    createDefaultSkin() {
+        let skin = createGraphics(this.boxSize, this.boxSize);
+        skin.background(color('red'));
+        return skin;
     }
 
     draw() {
-        fill(color('red'));
-        rect(this.x * this.boxSize, this.y * this.boxSize, this.boxSize, this.boxSize);
+        image(this.skin, this.x * this.boxSize, this.y * this.boxSize, this.boxSize, this.boxSize);
     }
 
-    addSkin(skinName, skinImg) {
-        this.skins[skinName] = skinImg;
+    changeSkin(skin) {
+        if (skin != null) this.skin = skin;
     }
 
     addControler(event) {
@@ -51,15 +59,6 @@ class Player {
             buttonDown.mousePressed(() => map.movePlayer(0, 1));
             buttonLeft.mousePressed(() => map.movePlayer(-1, 0));
             buttonRight.mousePressed(() => map.movePlayer(1, 0));
-
-            let skinMenu = select('#skin-menu');
-            let openSkinMenu = select('#open-skin-menu');
-            let closeSkinMenu = select('#close-skin-menu');
-
-            openSkinMenu.mousePressed(() => skinMenu.show());
-            closeSkinMenu.mousePressed(() => skinMenu.hide());
-
-
         }
 
         keyPressed() {
