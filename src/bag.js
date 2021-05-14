@@ -3,14 +3,12 @@ class Bag {
     BagElement = class {
         /**
          * 
-         * @param {String}  name
          * @param {Image}   img
          * @param {String}  imgSrc 
          * @param {Number}  state 
          * @param {Number}  price 
          */
-        constructor(name, img, imgSrc, state, price) {
-            this.name = name;
+        constructor(img, imgSrc, state, price) {
             this.img = img;
             this.imgSrc = imgSrc;
             this.state = state;
@@ -50,7 +48,6 @@ class Bag {
             let elementJSON = this.elementsJSON[key];
             let elementImg = loadImage(elementJSON.img, () => {
                 let element = new this.BagElement(
-                    elementJSON.name,
                     elementImg,
                     elementJSON.img,
                     elementJSON.state,
@@ -71,7 +68,7 @@ class Bag {
         for (let element of this.elements) {
 
             let option = createDiv();
-            let img = createImg(element.imgSrc, element.name);
+            let img = createImg(element.imgSrc, "");
             let button = createButton(element.state);
 
             if (element.state != "usar") {

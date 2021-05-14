@@ -17,11 +17,24 @@ class GameMap {
         this.boxSize = boxSize;
         this.componetsJSON = loadJSON(componetsJSON, () => this.components = this.createComponets());
 
-        // By deafult if 0 (not traslated) when the player is added or moved it change
         this.xOffset = 0;
         this.yOffset = 0;
+        this.gameGridimg = null;
+        this.gameMapImg = null;
+
+        // Inicialize the grid
+        this.gridLayout = []; // Make and 2d Array
+        for (let col = 0; col < this.width; col++) {
+            this.gridLayout[col] = [];
+            for (let row = 0; row < this.height; row++) {
+                this.gridLayout[col][row] = null;
+            }
+        }
     }
 
+    /**
+     * Create the defaulr grid and the maps
+     */
     setup() {
         this.gridLayout = this.createGrid();
         this.gameGridimg = this.createGridImg();
@@ -42,11 +55,9 @@ class GameMap {
 
                     // Create a new component and add the poiter to the object in the grid
                     let component = new Component(
-                        componetJSON.name,
                         position.x, position.y,
                         componetJSON.width,
                         componetJSON.height,
-                        this.boxSize,
                         position.door,
                         componetJSON.type,
                         componetImage,
@@ -62,31 +73,20 @@ class GameMap {
 
     /** Create grid matrix */
     createGrid() {
-        // Inicialize the grid
-        let grid = []; // Make and 2d Array
-        for (let col = 0; col < width; col++) {
-            grid[col] = [];  // Add an empty row to the collum
-            for (let row = 0; row < height; row++) {
-                grid[col][row] = null;
-            }
-        }
+        let grid = this.gridLayout;
 
         for (let component of this.components) {
             if (component.type != "background") {
                 // Set the componet to the layout
                 for (let x = component.x; x < component.x + component.width; x++) {
                     for (let y = component.y; y < component.y + component.height; y++) {
-                        if (grid[x][y] != null) {
-                            console.warn("There is alredy a component here." +
-                                "\ncreate: " + key + " on x: " + x + " y: " + y +
-                                "\ncreate: ", component.name +
-                            "\nOverwrite: ", grid[x][y]);
-                        }
+                        if (grid[x][y] != null) console.warn("There is alredy a component here: " + grid[x][y]);
                         grid[x][y] = component;
                     }
                 }
             }
         }
+
         return grid;
     }
 
@@ -107,10 +107,7 @@ class GameMap {
 
                 // Draw the position of the entry
                 gridImg.fill(color('gray'));
-                if (this.gridLayout[x][y] != null)
-                    gridImg.text(x + "," + y + "\n" + this.gridLayout[x][y].name, x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
-                else
-                    gridImg.text(x + "," + y + "\n", x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
+                gridImg.text(x + "," + y + "\n", x * this.boxSize, y * this.boxSize, this.boxSize, this.boxSize);
             }
         }
 
@@ -129,7 +126,7 @@ class GameMap {
         gameImg.textAlign(CENTER, CENTER);
         gameImg.text("The School At the night", 10 * this.boxSize, 0 * this.boxSize, 9 * this.boxSize, 2 * this.boxSize);
         gameImg.textSize(15);
-        gameImg.text("Tu descuidado tio no fue a buscarte a la escuela. Ahora estas atrapada en ella a mitad de la noche. Si quieres salir de aquí antes de que el reloj marque la una y los esqueletos salgan de sus tumbas, deberas completar una serie de misiones. Buena suerte.",
+        gameImg.text("Pronto sera la una, los esqueletos ya salen de sus tumbas. Llega al otro extremo de la escuela para ganar.",
             11 * this.boxSize, 2 * this.boxSize, 7 * this.boxSize);
 
         for (let component of this.components) {
@@ -162,7 +159,6 @@ class GameMap {
 
         } else {
             this.player = player;
-            this.player.setMap(this);
             this.player.setPosition(x, y);
 
             this.xOffset = -player.x * this.boxSize + floor(windowWidth / 2);
@@ -170,71 +166,43 @@ class GameMap {
         }
     }
 
+
     /**
      * 
      * @param {Number} xChange  
-     * @param {Number} yChange 
+     * @param {Number} yChange
      * @returns susses
      */
-    movePlayer(xChange, yChange) {
+    moveCharacter(xChange, yChange, character) {
 
-        if (!(player.x + xChange >= 0 && player.x + xChange <= this.width - 1 && player.y + yChange >= 0 && player.y + yChange <= this.height - 1)) {
+        if (!(character.x + xChange >= 0 && character.x + xChange <= this.width - 1 && character.y + yChange >= 0 && character.y + yChange <= this.height - 1)) {
             // The momvent is not posible cause new position is out the grid
             return false;
         }
 
-        if (this.gridLayout[this.player.x][this.player.y] != null) {
-            // The player is inside a component
+        let component, door;
 
-            let component = this.gridLayout[this.player.x][this.player.y];
-            let door = component.door;
+        if (this.gridLayout[character.x][character.y] != null) {
+            // The character is inside a component
+            component = this.gridLayout[character.x][character.y];
+            door = component.door;
 
-            if (door == null) return false; // The is not a door, the player can't move
+            let xMotion = xChange != 0 && !(character.x == door.x && character.y == door.y && door.dir == "x") && (this.gridLayout[character.x + xChange][character.y + yChange] != component)
+            let yMotion = yChange != 0 && !(character.x == door.x && character.y == door.y && door.dir == "y") && (this.gridLayout[character.x + xChange][character.y + yChange] != component)
 
-            if (xChange != 0) {
-                if (!(this.player.x == door.x && this.player.y == door.y && door.dir == "x") && (this.gridLayout[this.player.x + xChange][this.player.y + yChange] != component)) {
-                    // True means: There is not a door and the player wants move out the component. Then, the player can't move
-                    return false;
-                }
-            } else {
-                if (!(this.player.x == door.x && this.player.y == door.y && door.dir == "y") && (this.gridLayout[this.player.x + xChange][this.player.y + yChange] != component)) {
-                    // True means: There is not a door and the player wants move out the component. Then, the player can't move
-                    return false;
-                }
-            }
-        } else {
-            // The player is not in a component
+            if (door == null || xMotion || yMotion) return false;
 
-            if (this.gridLayout[player.x + xChange][player.y + yChange] != null) {
-                // True means: There is an component in the new position
-                let component = this.gridLayout[player.x + xChange][player.y + yChange];
-                let door = component.door;
+        } else if (this.gridLayout[character.x + xChange][character.y + yChange] != null) {
+            // The character is not in a component
+            component = this.gridLayout[character.x + xChange][character.y + yChange];
+            door = component.door;
 
-                if (door == null) {
-                    return false; // The player can't be inside a block
-                }
 
-                if (xChange != 0) {
-                    // True means: the player is moving in the x axis
+            let xMotion = xChange != 0 && !(character.x + xChange == door.x && character.y + yChange == door.y && door.dir == "x");
+            let yMotion = yChange != 0 && !(character.x + xChange == door.x && character.y + yChange == door.y && door.dir == "y");
 
-                    if (!((this.player.x + xChange) == door.x && (this.player.y + yChange) == door.y && door.dir == "x")) {
-                        // True means: There is not a dorr and the player wants move out the component. Then, the player can't move
-                        return false;
-                    }
-                } else {
-                    // True means: the player is moving in the y axis
-
-                    if (!((this.player.x + xChange) == door.x && (this.player.y + yChange) == door.y && door.dir == "y")) {
-                        // True means: There is not a dorr and the player wants move out the component. Then, the player can't move
-                        return false;
-                    }
-                }
-            }
+            if (door == null || xMotion || yMotion) return false;
         }
-
-        this.player.setPosition(player.x + xChange, player.y + yChange);
-        this.xOffset -= xChange * this.boxSize;
-        this.yOffset -= yChange * this.boxSize;
 
         return true;
     }

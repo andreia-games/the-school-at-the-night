@@ -1,51 +1,32 @@
-class Player {
+class Player extends Character {
 
-    constructor(name, boxSize, skin) {
-        this.name = name;
-        this.boxSize = boxSize;
+    constructor(name, boxSize, skin, map) {
+        super(name, boxSize, skin, map);
         this.points = 0;
-
-        this.map = null;
-        this.x = -1;
-        this.y = -1;
-
-        if (skin == null) this.skin = this.createDefaultSkin();
-        else this.skin = skin;
+        this.controler = new this.Controler(this, map);
     }
 
-    createDefaultSkin() {
-        let skin = createGraphics(this.boxSize, this.boxSize);
-        skin.background(color('red'));
-        return skin;
+    kill() {
+        alert("¡Has muerto! -5 puntos")
+        this.points -= 5;
+        this.setPosition(14, 4);
+        this.map.windowResized();
     }
-
-    draw() {
-        image(this.skin, this.x * this.boxSize, this.y * this.boxSize, this.boxSize, this.boxSize);
-    }
-
     changeSkin(skin) {
         if (skin != null) this.skin = skin;
     }
 
-    addControler(event) {
-        this.controler = new this.Controler(this);
+    move(xChange, yChange) {
+        if (this.map.moveCharacter(xChange, yChange, this)) {
+            this.setPosition(this.x + xChange, this.y + yChange);
+            this.map.xOffset -= xChange * this.map.boxSize;
+            this.map.yOffset -= yChange * this.map.boxSize;
+        }
     }
-
-    setMap(map) {
-        this.map = map;
-    }
-
-    setPosition(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-
     Controler = class {
-        constructor(player) {
+        constructor(player, map) {
             this.player = player
-            this.map = this.player.map;
-            this.canMove = true;
-
+            this.map = map;
             this.createControler();
         }
 
@@ -55,32 +36,30 @@ class Player {
             let buttonLeft = select('#left');
             let buttonRight = select('#right');
 
-            buttonUp.mousePressed(() => map.movePlayer(0, -1));
-            buttonDown.mousePressed(() => map.movePlayer(0, 1));
-            buttonLeft.mousePressed(() => map.movePlayer(-1, 0));
-            buttonRight.mousePressed(() => map.movePlayer(1, 0));
+            buttonUp.mousePressed(() => this.player.move(0, -1, this.player));
+            buttonDown.mousePressed(() => this.player.move(0, 1, this.player));
+            buttonLeft.mousePressed(() => this.player.move(-1, 0, this.player));
+            buttonRight.mousePressed(() => this.player.move(1, 0, this.player));
         }
 
         keyPressed() {
-            if (this.canMove) {
-                switch (keyCode) {
-                    case 37:
-                        // Arrow Left
-                        map.movePlayer(-1, 0)
-                        break;
-                    case 38:
-                        map.movePlayer(0, -1)
-                        // Arrow Up
-                        break;
-                    case 39:
-                        map.movePlayer(1, 0)
-                        // Arrow Right
-                        break;
-                    case 40:
-                        map.movePlayer(0, 1)
-                        // Arrow Down
-                        break;
-                }
+            switch (keyCode) {
+                case 37:
+                    // Arrow Left
+                    this.player.move(-1, 0, this.player)
+                    break;
+                case 38:
+                    this.player.move(0, -1, this.player)
+                    // Arrow Up
+                    break;
+                case 39:
+                    this.player.move(1, 0, this.player)
+                    // Arrow Right
+                    break;
+                case 40:
+                    this.player.move(0, 1, this.player)
+                    // Arrow Down
+                    break;
             }
         }
     }

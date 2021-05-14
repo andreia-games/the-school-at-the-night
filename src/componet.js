@@ -1,7 +1,6 @@
 class Component {
     /**
      * 
-     * @param {String}  name    Name of the componet.
      * @param {Number}  x       x position of the componet.
      * @param {Number}  y       y position of the componet.
      * @param {Number}  width   Number of collum of the componets.
@@ -10,8 +9,7 @@ class Component {
      * @param {String}  type    Block or background
      * @param {Image}   img     Image of the component image.
      */
-    constructor(name, x, y, width, height, boxSize, door, type, img) {
-        this.name = name;
+    constructor(x, y, width, height, door, type, img) {
         this.x = x;
         this.y = y;
         this.width = width;
