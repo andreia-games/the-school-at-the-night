@@ -2,8 +2,8 @@ class Enemy extends Character {
     constructor(name, boxSize, skin, map, player) {
         super(name, boxSize, skin, map);
         this.player = player;
-        this.x = Math.random() * (map.width);
-        this.y = Math.random() * (map.height);
+        this.x = Math.round(Math.random() * (map.width));
+        this.y = Math.round(Math.random() * (map.height));
     }
 
     move() {
@@ -17,5 +17,24 @@ class Enemy extends Character {
             this.setPosition(this.x + xChange, this.y + yChange);
 
         if (this.x == this.player.x && this.y == this.player.y) this.player.kill();
+    }
+}
+
+class WinPoint extends Character {
+    constructor(name, boxSize, skin, map, player) {
+        super(name, boxSize, skin, map);
+        this.player = player;
+        this.x = Math.round(Math.random() * (map.width));
+        this.y = Math.round(Math.random() * (map.height));
+    }
+
+    move() {
+        let x = Math.round(Math.random() * (map.width));
+        let y = Math.round(Math.random() * (map.height));
+
+        if (this.map.gridLayout[x][y] != null && this.map.gridLayout[x][y].door != null) {
+            this.x = x;
+            this.y = y;
+        }
     }
 }

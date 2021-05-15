@@ -4,6 +4,7 @@ class Player extends Character {
         super(name, boxSize, skin, map);
         this.points = 0;
         this.controler = new this.Controler(this, map);
+        this.canMove = true;
     }
 
     kill() {
@@ -17,7 +18,7 @@ class Player extends Character {
     }
 
     move(xChange, yChange) {
-        if (this.map.moveCharacter(xChange, yChange, this)) {
+        if (this.canMove && this.map.moveCharacter(xChange, yChange, this)) {
             this.setPosition(this.x + xChange, this.y + yChange);
             this.map.xOffset -= xChange * this.map.boxSize;
             this.map.yOffset -= yChange * this.map.boxSize;

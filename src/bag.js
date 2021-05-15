@@ -54,7 +54,7 @@ class Bag {
                     elementJSON.price
                 );
 
-                elements.unshift(element);
+                elements.push(element);
             });
         }
 

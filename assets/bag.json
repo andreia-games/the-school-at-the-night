@@ -1,20 +1,50 @@
 [
     {
-        "name": "cosa 1",
-        "img": "assets/background/office.png",
+        "name": "happy",
+        "img": "assets/skins/SlightlySmilingFace.png",
         "state": "usar",
         "price": 0
     },
     {
-        "name": "cosa 2",
-        "img": "assets/background/office.png",
+        "name": "Grinning Face",
+        "img": "assets/skins/GrinningFace.png",
         "state": "comprar",
         "price": 10
     },
     {
-        "name": "cosa 2",
-        "img": "assets/background/office.png",
+        "name": "Grinning Squinting Face",
+        "img": "assets/skins/GrinningSquintingFace.png",
         "state": "comprar",
-        "price": 0
+        "price": 20
+    },
+    {
+        "name": "Upside-Down Face",
+        "img": "assets/skins/UpsideDownFace.png",
+        "state": "comprar",
+        "price": 30
+    },
+    {
+        "name": "Smiling Face with Heart-Eyes",
+        "img": "assets/skins/SmilingFacewithHeartEyes.png",
+        "state": "comprar",
+        "price": 50
+    },
+    {
+        "name": "Expressionless Face",
+        "img": "assets/skins/ExpressionlessFace.png",
+        "state": "comprar",
+        "price": 80
+    },
+    {
+        "name": "Nerd Face",
+        "img": "assets/skins/NerdFace.png",
+        "state": "comprar",
+        "price": 130
+    },
+    {
+        "name": "Smiling Face with Sunglasses",
+        "img": "assets/skins/SmilingFacewithSunglasses.png",
+        "state": "comprar",
+        "price": 210
     }
 ]

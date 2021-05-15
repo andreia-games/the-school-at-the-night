@@ -1,18 +1,20 @@
-let map, player, bag, demon, enemieImg, enemies = [];
-let boxSize = 50, missionControl, missionTimer, missionPuntos, time = 60;
+let map, player, bag, enemieImg, enemies = [], winPoint;
+let boxSize = 50, time = 120, missionState = true, missionControl, missionTimer, missionPuntos, missionButton;
 
 // load the componets
 function preload() {
 	map = new GameMap("Mapa", 29, 35, boxSize, "assets/map.json");
-	player = new Player("Pepito", boxSize, null, map);
+	player = new Player("Pepito", boxSize, loadImage("assets/skins/SlightlySmilingFace.png"), map);
 	bag = new Bag("assets/bag.json", player);
-	enemieImg = null;
+	winPoint = new WinPoint("Win", boxSize, loadImage("assets/win-point.png"), map, player);
+
+	enemieImg = loadImage("assets/enemy.png");
 }
 
 function setup() {
 	let canvas = createCanvas(30 * boxSize, 20 * boxSize);
 	canvas.parent('canvas-container');
-	frameRate(5);
+	frameRate(10);
 
 	map.setup(); // Creates the maps image
 	bag.setup();
@@ -23,24 +25,38 @@ function setup() {
 	missionControl = select("#mision-control");
 	missionTimer = select("#timer");
 	missionPuntos = select("#point");
+	missionButton = select('#stop-play');
+
+	missionButton.mousePressed(() => {
+		missionState = !missionState;
+		player.canMove = !player.canMove;
+
+		if (missionState) missionButton.html('&#10074;&#10074;', false);
+		else missionButton.html('&#x23f5;')
+	});
 }
 
 function draw() {
 	map.draw();
 	player.draw();
+	winPoint.draw();
+
 	missionTimer.html("Tiempo: " + time);
 	missionPuntos.html("Puntos: " + player.points);
 
 	for (let enemy of enemies) {
-		enemy.move();
+		if (missionState) enemy.move();
 		enemy.draw();
 	}
-	time--
-	if (player.y == 34) upLevel();
+
+	if (missionState) time--
+
+	if (player.x == winPoint.x && player.y == winPoint.y) upLevel();
+
 	if (time == 0) {
 		player.kill();
-		time = 60;
-	} if (time < 10) {
+		time = 120;
+	} else if (time < 10) {
 		missionControl.style("color: red");
 	} else {
 		missionControl.style("color: black");
@@ -50,9 +66,13 @@ function draw() {
 function upLevel() {
 	player.points = player.points + 10;
 	player.setPosition(14, 4);
+
+	winPoint.move();
 	map.windowResized();
+
 	enemies.push(new Enemy("Villano", boxSize, enemieImg, map, player));
-	time = 60;
+
+	time = 120;
 	alert("Has subido de nivel! ganas 10 puntos mas. Numero de enemigos: " + enemies.length);
 }
 
