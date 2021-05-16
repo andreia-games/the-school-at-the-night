@@ -1,6 +1,11 @@
 button {
     cursor: pointer;
 }
+
+a {
+    color: white;
+    text-decoration: none;
+}
 body, html {
     padding: 0;
     margin: auto;
