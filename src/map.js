@@ -126,7 +126,7 @@ class GameMap {
         gameImg.textAlign(CENTER, CENTER);
         gameImg.text("The School At the night", 10 * this.boxSize, 0 * this.boxSize, 9 * this.boxSize, 2 * this.boxSize);
         gameImg.textSize(15);
-        gameImg.text("Pronto sera la una, los esqueletos ya salen de sus tumbas. Llega al otro extremo de la escuela para ganar.",
+        gameImg.text("Tu tio olvido pasar por ti. Ahora estas atrapado en la escuela. Si quisieres escapar,busca el portal verde usando las flechas o el control en pantalla antes que se acabe el tiempo. Buena suerte!",
             11 * this.boxSize, 2 * this.boxSize, 7 * this.boxSize);
 
         for (let component of this.components) {
