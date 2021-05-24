@@ -27,6 +27,8 @@ body, html {
     margin: auto;
 }
 
+
+
 #mision-control {
     position: absolute;
     top: 0;
@@ -58,6 +60,14 @@ body, html {
     color: white;
     background-color: crimson;
 }
+
+audio {
+    height: 30px;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
 
 #skin-menu {
     margin: auto;

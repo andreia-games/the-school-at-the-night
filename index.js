@@ -1,6 +1,7 @@
 let map, player, bag, enemieImg, enemies = [], winPoint;
-let boxSize = 50, time = 120, missionState = true, missionControl, missionTimer, missionPuntos, missionButton;
+let boxSize = 50, time = 500, missionState = true, missionControl, missionTimer, missionPuntos, missionButton;
 
+var audio = document.getElementById("complete");
 // load the componets
 function preload() {
 	map = new GameMap("Mapa", 29, 35, boxSize, "assets/map.json");
@@ -52,10 +53,11 @@ function draw() {
 	if (missionState) time--
 
 	if (player.x == winPoint.x && player.y == winPoint.y) upLevel();
+	
 
 	if (time == 0) {
 		player.kill();
-		time = 120;
+		time = 500;
 	} else if (time < 10) {
 		missionControl.style("color: red");
 	} else {
@@ -64,6 +66,7 @@ function draw() {
 }
 
 function upLevel() {
+	audio.play();
 	player.points = player.points + 10;
 	player.setPosition(14, 4);
 
@@ -72,8 +75,8 @@ function upLevel() {
 
 	enemies.push(new Enemy("Villano", boxSize, enemieImg, map, player));
 
-	time = 120;
-	alert("Has subido de nivel! ganas 10 puntos mas. Numero de enemigos: " + enemies.length);
+	time = 500;
+	alert("Has subido de nivel! ganas 10 puntos mas. Número de enemigos: " + enemies.length);
 }
 
 function keyPressed() {
