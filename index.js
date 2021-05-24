@@ -1,7 +1,7 @@
 let map, player, bag, enemieImg, enemies = [], winPoint;
 let boxSize = 50, time = 500, missionState = true, missionControl, missionTimer, missionPuntos, missionButton;
 
-var audio = document.getElementById("complete");
+var audio = document.getElementById("levelup");
 // load the componets
 function preload() {
 	map = new GameMap("Mapa", 29, 35, boxSize, "assets/map.json");
