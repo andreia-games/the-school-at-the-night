@@ -1,6 +1,7 @@
 let map, player, bag, enemieImg, enemies = [], winPoint;
 let boxSize = 50, time = 500, missionState = true, missionControl, missionTimer, missionPuntos, missionButton;
-var audio = document.getElementById("up");
+
+
 
 // load the componets
 function preload() {
@@ -67,7 +68,6 @@ function draw() {
 
 function upLevel() {
 	
-	audio.play();
 	player.points = player.points + 10;
 	player.setPosition(14, 4);
 	winPoint.move();
