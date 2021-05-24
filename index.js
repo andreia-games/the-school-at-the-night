@@ -66,17 +66,16 @@ function draw() {
 }
 
 function upLevel() {
-	audio.play();
+	
 	player.points = player.points + 10;
 	player.setPosition(14, 4);
-
 	winPoint.move();
 	map.windowResized();
-
+	
 	enemies.push(new Enemy("Villano", boxSize, enemieImg, map, player));
-
 	time = 500;
 	alert("Has subido de nivel! ganas 10 puntos mas. Número de enemigos: " + enemies.length);
+	audio.play();
 }
 
 function keyPressed() {
